@@ -1,0 +1,192 @@
+{
+  "_说明": "新人物模板：复制本文件改名为 <人物id>.json，逐字段填写后运行 node scripts/render.mjs <人物id>。以下划线开头的键是注释，渲染时忽略。",
+  "id": "REPLACE_ME_拼音小写如libai",
+  "meta": {
+    "_name": "人物姓名，同时作为K线左上角的『股票名』",
+    "name": "某某",
+    "_birthYear": "出生年（公历）。年龄显示 = 当前年份 - birthYear，与原片苏轼口径一致",
+    "birthYear": 0,
+    "title": "某某的人生K线",
+    "_bgm": "public/ 下的音频文件名，无BGM填 null。音频会从0秒满铺全片",
+    "bgm": null,
+    "_colors": "主题色覆盖，一般只改 paper/red 等少数键，其余可删（删掉的键用引擎默认色）",
+    "colors": {
+      "paperCenter": "#DBB59C",
+      "paperEdge": "#C8A58E",
+      "ink": "#201413",
+      "red": "#A22728",
+      "candleUp": "#A83A32",
+      "candleDown": "#294134",
+      "axisText": "#6B574A"
+    },
+    "_introCard": "可选：片头卡（书挡，首帧即封面：第0帧完整满不透明度，禁止淡入）。title=大标题；hookLine=钩子行（red 子串标红一个关键词）；suspenseLine=悬念行（红字小字，如最高/最低数字）；accentLine=小行。需要 timing 把首段 startSec 推后时才有片头时段；片头末尾0.6s向纸面淡出",
+    "introCard": {
+      "title": "某某的人生K线",
+      "hookLine": {
+        "text": "一根K线，看完他起落的一生",
+        "red": [
+          "起落"
+        ]
+      },
+      "suspenseLine": "最高 00 · 最低 0",
+      "accentLine": "朝代 · 某某 生卒年"
+    },
+    "_outroCard": "可选：片尾卡（书挡）。title=主行；accentLine=红字行；footer=底部小字。片尾时段=倒带结束到 totalSec",
+    "outroCard": {
+      "title": "收束主行",
+      "accentLine": "红字行",
+      "footer": "某某的人生K线 · 完"
+    },
+    "_portrait": "可选：片头人物画像水印。src 指向 public/portraits/ 下预处理好的棕褐单色透明 PNG（传世公有领域画像经 scripts/process_portrait.py 以墨色深度作 alpha、棕褐单色化、vignette 渐隐）；opacity 整体不透明度（缺省 0.3）；centerX/centerY 构图中心（画布分数，缺省 0.58/0.5 居中偏右）；heightFrac 画像高占画布高（缺省 0.81）。仅片头卡渲染，无此字段行为与旧版一致。示例：\"portrait\": {\"src\": \"portraits/<id>.png\", \"opacity\": 0.3, \"centerX\": 0.6, \"centerY\": 0.5, \"heightFrac\": 0.8125}",
+    "_cover": "可选：片头封面模式（优先于 portrait）。base 指向 public/cover/ 下全画布底图 JPG（1080×1920 设计：传世画作底图+文字区纸色带/分幅纸面，不含文字，scripts/make_cover_bases.py 生成）；layers 为二创分层（全画布透明 PNG，顺序自下而上），每层 {src, anim}：anim=draw 金线自绘约2.2s（可加 dots:[{x,y}] 峰谷点画布分数坐标，到达时光晕脉冲）/ breathe 月晕呼吸6s（originX/originY 锚点）/ drift 波纹缓漂9s / flow 瀑布水线下流2.8s / wander 水雾流动8s；textCenterFrac 文字块垂直中心占画布高分数（缺省 0.5，分幅版式文字在下幅时约 0.82）。仅片头卡渲染。示例：\"cover\": {\"base\": \"cover/<id>_base.jpg\", \"textCenterFrac\": 0.495, \"layers\": [{\"src\": \"cover/kline_gold_<id>.png\", \"anim\": \"draw\"}]}"
+  },
+  "_seed": "随机种子：同一人物固定一个整数，保证每次渲染蜡烛形态一致；不同人物换不同种子",
+  "seed": 1,
+  "_totalSec": "总时长（秒）。应等于 finale.rewindStartSec + 约3秒倒带，且 segments 必须从0连续拼到 finale.startSec",
+  "totalSec": 89,
+  "segments": [
+    {
+      "_id": "段落id，随意但唯一",
+      "id": "s01",
+      "startSec": 0,
+      "endSec": 4,
+      "_lines": "大字卡文案行数组：text=整行原文；red=该行内要标红的子串数组；green=要标深绿的子串数组（原片仅『跌停』用绿）。一段只有一个大字卡时用 lines",
+      "lines": [
+        {
+          "text": "第一行文案，",
+          "red": [
+            "要标红的词"
+          ]
+        },
+        {
+          "text": "第二行文案。",
+          "red": []
+        }
+      ],
+      "_headlineCards": "可选：一段内切换两个大字卡时用它代替 lines。atSec=相对段首的切换秒数，第一张必须为0",
+      "yearFrom": 0,
+      "yearTo": 0,
+      "_priceFrom_priceTo": "本段价格起点/终点（虚构叙事价位，与下一段衔接或跳空均可）",
+      "priceFrom": 10,
+      "priceTo": 10,
+      "_shape": "价格路径形态：rally=上攻 / crash=暴跌 / sideways=横盘 / floor=地板磨底 / stairs-up=台阶连升 / stairs-down=台阶连降 / bounce=先探底后反弹 / flat=走平(停牌段配 halt:true)",
+      "shape": "flat",
+      "_halt": "可选，true=停牌段：中段不画蜡烛（留空档）、量柱为0",
+      "_volatility": "可选，波动放大倍数，默认1；情绪动荡段可填1.5-2",
+      "_pitch": "可选：蜡烛中心距(px@720宽)。平淡长时段填小(≈20，细烛快滚)，关键事件段填大(≈54，粗烛慢滚)；缺省按年速公式拟合",
+      "pitch": 30,
+      "_candlesPerSec": "可选：每秒生成蜡烛数，与 pitch 一起决定滚动速度 vx=pitch×candlesPerSec(px/s)；缺省按年速公式拟合",
+      "candlesPerSec": 2,
+      "_stamp": "印章，无则删掉整键或填 null。color: red=涨停 / brown=停牌 / green=跌停 / black=退市。atSec 仅作记录：引擎实际按 min(段首0.4s, 价格到达极值时) 盖入",
+      "stamp": null,
+      "_annotations": "事件小标注：text=短语（≤6字最佳）；atYear=标注锚定的年份（取该年在本段内的第一根蜡烛位置）",
+      "annotations": [
+        {
+          "text": "事件短语",
+          "atYear": 0
+        }
+      ]
+    }
+  ],
+  "_cards": "可选：典故卡（底部史书卡）。tag=左上小红签（事件名）；lines=卡面文字，已断好的1-2行（每行≤17字），逐字显示；绑 segmentId 时起止自动推导（段首+0.3s淡入0.5s、段末-0.4s前淡出0.5s）；finale 引用卡等特殊卡可直接给 startSec/endSec 绝对时间。每个关键节点一张，把涨跌背后的典故/原因写上屏",
+  "cards": [
+    {
+      "tag": "事件名",
+      "segmentId": "s01",
+      "lines": [
+        "典故第一行，",
+        "第二行"
+      ]
+    }
+  ],
+  "_journey_注释": "可选：人生轨迹旅居点数组 journey（背景地图层，finale 显示完整轨迹）。每点 {name 古地名, lon, lat 今地经纬度, seg 叙事归属 segment id, at 点亮时刻（终版轴绝对秒，必填现行口径）, labelSide 可选 left/right}，按 at 非递减（即解说提及顺序）排列；同名地点合并为同一点（再访加环）。at 的定法：词级对齐实测——解说直呼地名锚地名词起始，未直呼锚其所属事件分句的对应词，逐 stop 依据写入 _why。切勿用段窗起点/均布推导点亮时刻：会系统性早于解说提及（实测最大提前 44.6s，见 out/qcmap/light_timing_audit.md）。示例见 sushi.json / libai.json 的 journey 字段。",
+  "journey": [],
+  "finale": {
+    "_startSec": "总览段起始秒 = 最后一段 endSec",
+    "startSec": 70,
+    "poemAtSec": 75.5,
+    "closingAtSec": 80.5,
+    "_rewindStartSec": "倒带起始秒，倒带时长 = totalSec - rewindStartSec（约3秒）",
+    "rewindStartSec": 86,
+    "introLines": [
+      {
+        "text": "收束引入第一行，",
+        "red": []
+      },
+      {
+        "text": "他写下一生总结：",
+        "red": []
+      }
+    ],
+    "_poemLine": "结尾诗句行（全片情绪落点，一行显示）",
+    "poemLine": "在此填诗句。",
+    "_closingLine": "收束大字（一行显示，全片最后一句）",
+    "closingLine": "在此填收束句。",
+    "_tags": "三个低谷红签：text=单字签面；full=地名全称（文档用）；segmentIndex=该低谷所在段落在 segments 中的下标（从0数）",
+    "tags": [
+      {
+        "text": "甲",
+        "full": "地名甲",
+        "segmentIndex": 0
+      },
+      {
+        "text": "乙",
+        "full": "地名乙",
+        "segmentIndex": 1
+      },
+      {
+        "text": "丙",
+        "full": "地名丙",
+        "segmentIndex": 2
+      }
+    ]
+  },
+  "_timing": "可选：解说驱动时间轴。先按固定时间轴把 segments/finale 填好（旧轴），再给 blocks：每块对应一段解说的起止秒，visual 列块内视觉段 id（按原时长比例切分块时长），结尾两块用 finale1（总览引入）/finale2（诗句+收束）；rewindDurSec=倒带秒数；totalSec=含片头片尾的新总时长。引擎加载时自动重映射，蜡烛根数不变、推进速度随段时长伸缩。删掉本字段则回到固定时间轴",
+  "timing": {
+    "blocks": [
+      {
+        "startSec": 5.6,
+        "endSec": 12.0,
+        "visual": [
+          "s01"
+        ]
+      }
+    ],
+    "rewindDurSec": 3.0,
+    "totalSec": 100,
+    "_sync": "可选：句级音画同步锚点（词级时间戳实测后填写，全部为最终轴绝对秒；块边界/总时长不变）。segment_splits：{seg,startSec} 钉段内容起点（前段随之收束）；{seg,startSec,endSec,afterSeg} 把段迁移到 afterSeg 之后作为独立视觉拍；candlePoolPrev=true 与前段合池蜡烛根数按新时长比例再分配（总数守恒）。segment_prices：迁移后段的价格对齐（防收盘链断裂巨烛）。phase_fractions：{seg,holdStart} 主转折（起跌/转跌）段内分数、{seg,runFrom} 保持结束后形状续跑进度（缺省 0）、{seg,settle} 落定段内分数。headline_cards：大字卡归属覆盖——{seg,suppress:true} 本段不占大字卡时间表（其窗由上一张卡延续承担）；{seg,cards:[{atSec,lines}]} 把大字卡序列钉到内容所属段（atSec 为最终轴段内相对秒）。stamps：{seg,atSec} 印章绝对盖入秒，fromSeg=印章原本所在段（跨段转移）。cards：{tag,inSec[,endSec]} 典故卡入场秒（按 tag 匹配）。finale：{poemAtSec,closingAtSec} 诗句/收束相位秒。删掉 sync 则行为与仅 blocks 完全一致",
+    "sync": {
+      "segment_splits": [
+        {
+          "seg": "s02",
+          "startSec": 8.8
+        }
+      ],
+      "segment_prices": [],
+      "phase_fractions": [
+        {
+          "seg": "s08",
+          "holdStart": 0.4
+        }
+      ],
+      "stamps": [
+        {
+          "seg": "s02",
+          "atSec": 11.2
+        }
+      ],
+      "cards": [
+        {
+          "tag": "示例卡",
+          "inSec": 37.2
+        }
+      ],
+      "finale": {
+        "poemAtSec": 95.4,
+        "closingAtSec": 100.5
+      }
+    }
+  },
+  "_staySpans_注释": "停留区间（可选）：「当前位置」模型。数组首尾相接、全覆盖 [0, totalSec]；每项 {name, lon, lat, start, end, labelSide?, _why}，start/end 为终版轴绝对秒，边界取词级对齐提及锚点或解说块块首；解说无地名落点时沿用上一区间，禁止发明迁徙；逐段归属表参照 out/qcmap/location_spans.md 的做法先行考证再落数据。",
+  "staySpans": []
+}

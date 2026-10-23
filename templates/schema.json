@@ -1,0 +1,773 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LifeKlineFigure 人物数据包",
+  "type": "object",
+  "required": [
+    "id",
+    "meta",
+    "seed",
+    "totalSec",
+    "segments",
+    "finale"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "name",
+        "birthYear"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "birthYear": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "bgm": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "colors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "introCard": {
+          "$ref": "#/definitions/bookendCard"
+        },
+        "outroCard": {
+          "$ref": "#/definitions/bookendCard"
+        },
+        "portrait": {
+          "type": "object",
+          "description": "片头人物画像水印（可选）：src 为 public/ 下预处理好的棕褐单色透明 PNG（传世画像，scripts/process_portrait.py 处理）；仅片头卡渲染。opacity 整体不透明度（默认 0.3）；centerX/centerY 构图中心（画布宽/高分数，默认 0.58/0.5）；heightFrac 画像高占画布高分数（默认 0.81）",
+          "required": [
+            "src"
+          ],
+          "properties": {
+            "src": {
+              "type": "string"
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "centerX": {
+              "type": "number"
+            },
+            "centerY": {
+              "type": "number"
+            },
+            "heightFrac": {
+              "type": "number"
+            }
+          }
+        },
+        "cover": {
+          "type": "object",
+          "description": "片头封面模式（可选，优先于 portrait）：底图画作 + 二创分层动效。base 为 public/ 下全画布 JPG（1080×1920 设计，已含文字区纸色带/分幅纸面，不含文字与二创层，scripts/make_cover_bases.py 生成）；layers 为全画布透明 PNG 图层数组（合成顺序自下而上），anim 动效类型：draw（金线自绘约 2.2s，dots 为峰/谷点画布分数坐标、到达时光晕脉冲）/ breathe（呼吸 6s，originX/originY 为缩放锚点）/ drift（波纹缓漂 9s）/ flow（瀑布水线下流 2.8s 双层错相）/ wander（水雾流动 8s）；textCenterFrac 文字块垂直中心占画布高分数（缺省 0.5；分幅版式文字在下幅时 >0.5）。仅片头卡渲染，无此字段行为与旧版一致",
+          "required": [
+            "base"
+          ],
+          "properties": {
+            "base": {
+              "type": "string"
+            },
+            "textCenterFrac": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "layers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "src",
+                  "anim"
+                ],
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "anim": {
+                    "type": "string",
+                    "enum": [
+                      "draw",
+                      "breathe",
+                      "drift",
+                      "flow",
+                      "wander"
+                    ]
+                  },
+                  "originX": {
+                    "type": "number"
+                  },
+                  "originY": {
+                    "type": "number"
+                  },
+                  "dots": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "totalSec": {
+      "type": "number"
+    },
+    "segments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "startSec",
+          "endSec",
+          "yearFrom",
+          "yearTo",
+          "priceFrom",
+          "priceTo",
+          "shape"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "startSec": {
+            "type": "number"
+          },
+          "endSec": {
+            "type": "number"
+          },
+          "lines": {
+            "$ref": "#/definitions/lines"
+          },
+          "headlineCards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "atSec": {
+                  "type": "number"
+                },
+                "lines": {
+                  "$ref": "#/definitions/lines"
+                }
+              },
+              "required": [
+                "atSec",
+                "lines"
+              ]
+            }
+          },
+          "yearFrom": {
+            "type": "number"
+          },
+          "yearTo": {
+            "type": "number"
+          },
+          "priceFrom": {
+            "type": "number"
+          },
+          "priceTo": {
+            "type": "number"
+          },
+          "shape": {
+            "enum": [
+              "rally",
+              "crash",
+              "sideways",
+              "floor",
+              "stairs-up",
+              "stairs-down",
+              "bounce",
+              "flat"
+            ]
+          },
+          "halt": {
+            "type": "boolean"
+          },
+          "volatility": {
+            "type": "number"
+          },
+          "stamp": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "color": {
+                "enum": [
+                  "red",
+                  "brown",
+                  "green",
+                  "black"
+                ]
+              },
+              "atSec": {
+                "type": "number"
+              },
+              "atAbsSec": {
+                "type": "number",
+                "description": "绝对盖入时刻（可选，一般由 timing.sync 印章覆盖自动写入）：设置后脱离价格路径推导按此绝对秒盖入"
+              },
+              "fadeAbsSec": {
+                "type": "number",
+                "description": "绝对淡出起始时刻（可选，一般由 timing.sync 自动写入）：设置后淡出不绑宿主段段末，可跨段停留"
+              }
+            },
+            "required": [
+              "text",
+              "color",
+              "atSec"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "atYear": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "text",
+                "atYear"
+              ]
+            }
+          },
+          "pitch": {
+            "type": "number",
+            "description": "蜡烛中心距 px@720宽（可选，缺省按年速公式拟合）"
+          },
+          "candlesPerSec": {
+            "type": "number",
+            "description": "每秒生成蜡烛数（可选，缺省按年速公式拟合）"
+          },
+          "candleCount": {
+            "type": "number",
+            "description": "锁定蜡烛根数（可选，一般由 timing 重映射自动写入）：设置后蜡烛根数不随段时长变化"
+          },
+          "contentEndSec": {
+            "type": "number",
+            "description": "蜡烛分布的内容窗终点（可选，一般由 timing 重映射自动写入）：缺省=endSec；小于 endSec 时差额为呼吸间隔（保持段末状态）"
+          },
+          "beat": {
+            "type": "boolean",
+            "description": "视觉拍段标记（可选，一般由 timing.sync 跨块迁移自动写入）：只保留蜡烛/印章/典故卡，不占大字卡时间表，所在块大字卡由同块主段承担并按块界预滚入场"
+          },
+          "phaseWarp": {
+            "type": "object",
+            "description": "段内相位扭曲（可选，一般由 timing.sync.phase_fractions 自动写入）：holdStart=在此段内分数之前价格保持起点（仅噪声微震），其后全程形状压缩运行；runFrom=保持结束后形状从该进度续跑（缺省 0=全程压缩；bounce 等含先行段的形状取形状值≈起点价的进度可跳过先行段且切换点价格连续）；settle=在此分数之前跑完全程形状，其后保持终点价。holdStart 与 settle 互斥",
+            "properties": {
+              "holdStart": {
+                "type": "number"
+              },
+              "settle": {
+                "type": "number"
+              },
+              "runFrom": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "cards": {
+      "type": "array",
+      "description": "典故卡（底部史书卡，可选）：绑 segmentId 时起止由段落推导（段首+0.3s 淡入、段末-0.4s 淡出）；或直接给 startSec/endSec 绝对时间（如 finale 引用卡）。lines 为已断好的行（1–2 行），逐字显示",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "string",
+            "description": "卡片左上小红签文字（事件名）"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 2
+          },
+          "segmentId": {
+            "type": "string"
+          },
+          "startSec": {
+            "type": "number"
+          },
+          "endSec": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "tag",
+          "lines"
+        ]
+      }
+    },
+    "journey": {
+      "type": "array",
+      "description": "人生轨迹旅居点（可选）：背景地图层按点亮时刻逐点点亮并连成轨迹，finale 显示完整轨迹。纯视觉层，不参与 timing/sync。name 为古地名（同名合并为同一点，再访加环）；lon/lat 为今地对应点经纬度；seg 为该点叙事归属的 segment id；at 为点亮时刻显式锚点（终版轴绝对秒，= 解说提及该地或其所属事件分句的词级实测时刻）——现行口径必须给 at，缺失时才回退旧规则（绑定段内容窗内点亮、同段多点窗前 85% 均布，该规则会系统性先行于解说提及，勿用于新人物）；数组须按 at 非递减排列；labelSide 可选 left/right 控制标注侧（密集点错开用）。锚点审计见 out/qcmap/light_timing_audit.md",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "lon",
+          "lat",
+          "seg"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "number"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "seg": {
+            "type": "string"
+          },
+          "labelSide": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right"
+            ]
+          },
+          "at": {
+            "type": "number",
+            "description": "点亮时刻（终版轴绝对秒）：解说提及锚点，依据逐 stop 记在 _why"
+          }
+        }
+      }
+    },
+    "staySpans": {
+      "type": "array",
+      "description": "停留区间（可选）：「当前位置」模型数据。正片 live 地图层每一时刻有且只有一个当前地点（当前点持续呼吸闪烁、迁徙 leg 在新区间开始后约1–2s内画完、待过点空心保留）。数组必须首尾相接、全覆盖 [0, totalSec]；start/end 为终版轴绝对秒，边界 = 词级对齐提及锚点或解说块块首；解说无地名落点的时段沿用上一区间，不得发明迁徙。逐段归属依据记在 _why，归属表见 out/qcmap/location_spans.md。finale 全轨迹总览仍用 journey，与本字段无关。",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "lon",
+          "lat",
+          "start",
+          "end"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "number"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "start": {
+            "type": "number",
+            "description": "区间开始（终版轴绝对秒）"
+          },
+          "end": {
+            "type": "number",
+            "description": "区间结束（终版轴绝对秒）= 下一区间 start"
+          },
+          "labelSide": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right"
+            ]
+          }
+        }
+      }
+    },
+    "finale": {
+      "type": "object",
+      "required": [
+        "startSec",
+        "poemAtSec",
+        "closingAtSec",
+        "rewindStartSec",
+        "introLines",
+        "poemLine",
+        "closingLine",
+        "tags"
+      ],
+      "properties": {
+        "startSec": {
+          "type": "number"
+        },
+        "poemAtSec": {
+          "type": "number"
+        },
+        "closingAtSec": {
+          "type": "number"
+        },
+        "rewindStartSec": {
+          "type": "number"
+        },
+        "introLines": {
+          "$ref": "#/definitions/lines"
+        },
+        "poemLine": {
+          "type": "string"
+        },
+        "closingLine": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "full": {
+                "type": "string"
+              },
+              "segmentIndex": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "text",
+              "segmentIndex"
+            ]
+          }
+        },
+        "rewindDurSec": {
+          "type": "number",
+          "description": "倒带时长秒（可选）：缺省 = totalSec - rewindStartSec"
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "description": "解说驱动外部时间轴（可选）：blocks 每块对应一段解说时长，块内 visual 段按原时长比例切分块时长；finale1=总览引入阶段（旧 finale.startSec→poemAtSec），finale2=诗句+收束阶段（旧 poemAtSec→rewindStartSec）。引擎在加载时重映射段边界、蜡烛分布窗、印章/大字卡相对时刻、绝对时间典故卡与 finale 各时刻；蜡烛根数锁定不变，推进速度随段时长自动伸缩。缺省时行为与固定时间轴一致",
+      "properties": {
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "startSec": {
+                "type": "number"
+              },
+              "endSec": {
+                "type": "number"
+              },
+              "visual": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "startSec",
+              "endSec",
+              "visual"
+            ]
+          }
+        },
+        "rewindDurSec": {
+          "type": "number"
+        },
+        "totalSec": {
+          "type": "number",
+          "description": "重映射后全片总时长（秒，含片头/片尾）"
+        },
+        "sync": {
+          "type": "object",
+          "description": "句级音画同步锚点（可选，词级时间戳实测）：在 blocks 重映射之后以最终轴绝对秒应用，块边界与总时长不变，只重排画面转折点。segment_splits=段切分/迁移（startSec 钉本段内容起点、endSec 钉终点、afterSeg 跨块迁移、candlePoolPrev 与前段合池蜡烛按新时长比例再分配）；segment_prices=迁移后价格对齐；phase_fractions=段内转折点分数（holdStart 起跌/转跌点、runFrom 保持后形状续跑进度、settle 落定点）；headline_cards=大字卡归属覆盖（段切分锚点与卡内容所属解说块不一致时：suppress 本段不占大字卡时间表、其窗由上一张卡延续承担，cards 把卡序列钉到内容所属段，atSec 为最终轴段内相对秒）；stamps=印章绝对盖入时刻（fromSeg 跨段转移宿主）；cards=典故卡入场绝对时刻（按 tag）；finale=诗句/收束相位绝对时刻。缺省时行为与无 sync 完全一致",
+          "properties": {
+            "segment_splits": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seg": {
+                    "type": "string"
+                  },
+                  "startSec": {
+                    "type": "number"
+                  },
+                  "endSec": {
+                    "type": "number"
+                  },
+                  "afterSeg": {
+                    "type": "string"
+                  },
+                  "candlePoolPrev": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "seg",
+                  "startSec"
+                ]
+              }
+            },
+            "segment_prices": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seg": {
+                    "type": "string"
+                  },
+                  "priceFrom": {
+                    "type": "number"
+                  },
+                  "priceTo": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "seg",
+                  "priceFrom",
+                  "priceTo"
+                ]
+              }
+            },
+            "phase_fractions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seg": {
+                    "type": "string"
+                  },
+                  "holdStart": {
+                    "type": "number"
+                  },
+                  "settle": {
+                    "type": "number"
+                  },
+                  "runFrom": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "seg"
+                ]
+              }
+            },
+            "headline_cards": {
+              "type": "array",
+              "description": "大字卡归属覆盖：suppress=true 时本段不占大字卡时间表（置 beat，其显示窗由时间表上一张卡延续承担）；cards 替换本段大字卡序列（HeadlineCard 结构，atSec 为最终轴段内相对秒）",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seg": {
+                    "type": "string"
+                  },
+                  "suppress": {
+                    "type": "boolean"
+                  },
+                  "cards": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "atSec": {
+                          "type": "number"
+                        },
+                        "lines": {
+                          "$ref": "#/definitions/lines"
+                        }
+                      },
+                      "required": [
+                        "atSec",
+                        "lines"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "seg"
+                ]
+              }
+            },
+            "stamps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seg": {
+                    "type": "string"
+                  },
+                  "atSec": {
+                    "type": "number"
+                  },
+                  "fromSeg": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "seg",
+                  "atSec"
+                ]
+              }
+            },
+            "cards": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string"
+                  },
+                  "inSec": {
+                    "type": "number"
+                  },
+                  "endSec": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "tag",
+                  "inSec"
+                ]
+              }
+            },
+            "finale": {
+              "type": "object",
+              "properties": {
+                "poemAtSec": {
+                  "type": "number"
+                },
+                "closingAtSec": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "blocks"
+      ]
+    }
+  },
+  "definitions": {
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "red": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "green": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    "bookendCard": {
+      "type": "object",
+      "description": "片头/片尾卡（书挡）：引擎内渲染，纸面底+宋体。第0帧即完整卡面满不透明度（首帧即封面，禁止入场淡入/黑场），仅时段末尾可向纸面色淡出（片头0.6s/片尾0.9s）。片头时段=[0, 首段 startSec)，片尾时段=[rewindStartSec+rewindDurSec, totalSec]。title=主行；hookLine=片头钩子行（LineSpec，red 子串标红）；suspenseLine=片头悬念行（红字小字）；subtitle=片头副行（旧式）；accentLine=红字行/小行；footer=片尾底部小字",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "hookLine": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "red": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "description": "片头钩子行：text 整行原文，red 为行内标红子串"
+        },
+        "suspenseLine": {
+          "type": "string",
+          "description": "片头悬念行（红字小字）"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "accentLine": {
+          "type": "string"
+        },
+        "footer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    }
+  }
+}
