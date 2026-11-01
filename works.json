@@ -926,6 +926,108 @@
    ],
    "一句话钩子": "涨到三十四，退在二十三点。",
    "目录页": "episodes/22-suxun.md"
+  },
+  {
+   "期号": 25,
+   "人物": "曹操",
+   "id": "caocao",
+   "生卒": "汉 · 曹操 155—220",
+   "定版文件": "out/caocao_final.mp4",
+   "时长秒": 233.63,
+   "时长备注": "1.5 倍速定版",
+   "极值": {
+    "最高": 44,
+    "最低": 11,
+    "退市": 31
+   },
+   "封面": {
+    "选型名": "A · 东临碣石观沧海",
+    "底图作品": "《Cannon Rock》（1895）",
+    "作者": "Winslow Homer",
+    "来源编号": "The Met 11113",
+    "授权": "公有领域（CC0 / Public Domain），叠加层为程序化二创"
+   },
+   "文案文件": "life-kline-studio/storyboard/caocao-script.md",
+   "发布文案文件": "life-kline-studio/release/caocao-copy.md",
+   "地点轨迹": [
+    "谯县",
+    "洛阳",
+    "济南",
+    "陈留",
+    "兖州",
+    "许昌",
+    "邺城",
+    "洛阳"
+   ],
+   "一句话钩子": "封顶四十四，退在三十一点。",
+   "目录页": "episodes/25-caocao.md"
+  },
+  {
+   "期号": 26,
+   "人物": "荀子",
+   "id": "xunzi",
+   "生卒": "战国 · 荀子 约前313—前238",
+   "定版文件": "out/xunzi_final.mp4",
+   "时长秒": 144.33,
+   "时长备注": "1.5 倍速定版",
+   "极值": {
+    "最高": 44,
+    "最低": 8,
+    "退市": 15
+   },
+   "封面": {
+    "选型名": "A · 稷下论学",
+    "底图作品": "《杏园雅集图》（Elegant Gathering in the Apricot Garden）",
+    "作者": "明 · 传谢环",
+    "来源编号": "The Met 41478",
+    "授权": "公有领域（CC0 / Public Domain），叠加层为程序化二创"
+   },
+   "文案文件": "life-kline-studio/storyboard/xunzi-script.md",
+   "发布文案文件": "life-kline-studio/release/xunzi-copy.md",
+   "地点轨迹": [
+    "邯郸",
+    "临淄",
+    "咸阳",
+    "临淄",
+    "兰陵"
+   ],
+   "一句话钩子": "封顶四十四，退在十五点。",
+   "目录页": "episodes/26-xunzi.md"
+  },
+  {
+   "期号": 27,
+   "人物": "司马迁",
+   "id": "simaqian",
+   "生卒": "汉 · 司马迁 约前145—约前86",
+   "定版文件": "out/simaqian_final.mp4",
+   "时长秒": 177.14,
+   "时长备注": "1.5 倍速定版",
+   "极值": {
+    "最高": 42,
+    "最低": 2,
+    "退市": 21
+   },
+   "封面": {
+    "选型名": "B · 伏生授经",
+    "底图作品": "《伏生授经图》（The Scholar Fu Sheng Transmitting the Book of Documents）",
+    "作者": "明 · 杜堇",
+    "来源编号": "The Met 39667",
+    "授权": "公有领域（CC0 / Public Domain），叠加层为程序化二创"
+   },
+   "文案文件": "life-kline-studio/storyboard/simaqian-script.md",
+   "发布文案文件": "life-kline-studio/release/simaqian-copy.md",
+   "地点轨迹": [
+    "夏阳",
+    "会稽",
+    "九疑",
+    "曲阜",
+    "淮阴",
+    "长安",
+    "成都",
+    "长安"
+   ],
+   "一句话钩子": "封顶四十二，退在二十一点。",
+   "目录页": "episodes/27-simaqian.md"
   }
  ]
 }
