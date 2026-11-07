@@ -42,8 +42,14 @@
 │   ├── figure-template.json         # 人物数据模板（新人物从此起稿）
 │   ├── schema.json                  # 人物数据契约（jsonschema 校验用）
 │   └── release-copy-template.md     # 发布文案模板（各平台标题/文案/标签填空式）
-└── docs/
-    └── audio-qc-standard.md         # 音频生产质检标准（稿前审/分段生成/四道门禁全文）
+├── docs/
+│   └── audio-qc-standard.md         # 音频生产质检标准（稿前审/分段生成/四道门禁全文）
+├── skills/
+│   ├── life-kline-audio-qc/SKILL.md     # 音频纠正手册（缺陷分类学/三级判据/修复阶梯，深化 docs/audio-qc-standard.md）
+│   └── life-kline-cover-design/SKILL.md # 封面设计手册（两式版式/拍板统计/选图协议/溢出前置检查）
+└── data/
+    ├── price_archetypes.json        # 全部人物股价走势指纹库（机器可读：归一化指纹+形状特征+弧线原型）
+    └── price_archetypes.md          # 同上人类可读版（原型总览+反向联想流程）
 ```
 
 ## 品牌口径（发布时遵守）
